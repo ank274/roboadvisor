@@ -5,6 +5,7 @@ The app monitors the low and high values of the stock for the last 100 days. If 
 
 ## Environment Setup
 ```bash
+cd ~/roboadvisor/app
 conda create -n roboadvisor-env python=3.7 # (first time only)
 conda activate roboadvisor-env
 ```
@@ -17,6 +18,5 @@ pip install pytest
 ##Usage
 
 ```bash
-cd ~/roboadvisor/app
 python roboAdvisor.py
 ```
