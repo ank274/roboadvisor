@@ -1,6 +1,12 @@
 from dotenv import load_dotenv
 import os
 import requests
+import pandas as pd
+import datetime
+
+choice = ""
+reason = ""
+date = datetime.datetime.now()
 
 load_dotenv()
 
@@ -31,5 +37,30 @@ else:
         + parsed_data['Time Series (Daily)'][date_list]["2. high"] + "," + parsed_data['Time Series (Daily)'][date_list]["3. low"] 
         + "," + parsed_data['Time Series (Daily)'][date_list]["4. close"] + "," + parsed_data['Time Series (Daily)'][date_list]["5. volume"] + "\n")
     f.close()
+    csv_read = pd.read_csv("../data/price_{}.csv".format(user_input))
+    median = float(csv_read['low'].median())
+    high = float(csv_read['high'].max())
+    current = csv_read.iloc[0]["close"]
+    print("Selected Stock " + user_input)
+    print("Date Runned:{} Time {}".format(date.strftime("%x"),date.strftime('%X')))
+    print("Last Refreshed " + parsed_data['Meta Data']['3. Last Refreshed'])
+    print("high $" + str(round(float(parsed_data['Time Series (Daily)'][all_date[0]]['2. high']),2)))
+    print("low $" + str(round(float(parsed_data['Time Series (Daily)'][all_date[0]]['3. low']),2)))
+    print("close $" + str(round(float(parsed_data['Time Series (Daily)'][all_date[0]]['4. close']),2)))
+    if(current <= median):
+        response = "buy"
+        reason = "It is equal to or lower than the median of all the low values for the last 100 days"
+    elif(current >= high):
+        repsone ="do not buy"
+        reason = "It is equal to or higher than the highest value of the last 100 das=ys"
+    else:
+        reason = "It is greater than the median of the lowest values of the last 100 days"
+        response="Do not buy"
+    print("RECOMMENDATION: {}".format(response))
+    print("Reason {}".format(reason))
+    print("-------------------------")
+    print("HAPPY INVESTING!")
+    print("-------------------------")
+
 
 
